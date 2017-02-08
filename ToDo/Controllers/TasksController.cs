@@ -36,6 +36,29 @@ namespace ToDo.Controllers
             return View(task);
         }
 
+        public ActionResult ToggleDone(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Task task = db.Tasks.Find(id);
+            if (task == null)
+            {
+                return HttpNotFound();
+            }
+            if (task.IsDone)
+            {
+                task.IsDone = false;
+            }
+            else
+            {
+                task.IsDone = true;
+            }
+            db.SaveChanges();
+            return RedirectToAction("Index");    
+        }
+
         // GET: Tasks/Create
         public ActionResult Create()
         {
